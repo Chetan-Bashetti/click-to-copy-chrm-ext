@@ -1,0 +1,10 @@
+.App {
+	color: black;
+	text-align: center;
+	height: 450px;
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+	overflow: scroll;
+	font-family: monospace;
+}
