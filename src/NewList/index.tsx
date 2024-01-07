@@ -1,4 +1,5 @@
 import React from 'react';
+import { BG, BORDER_RADIUS, SEC_BG } from '../utils';
 
 interface FormDetailsProps {
 	allLists: object[];
@@ -20,16 +21,16 @@ const styles = {
 		padding: '0.5em 0'
 	},
 	borders: {
-		border: '1px solid #7a43f5'
+		border: `1px solid ${BG}`
 	},
 	button: {
 		padding: '0.3em 0.5em',
-		margin: '0.5em',
+		margin: '0 0.3em',
 		border: 'none',
 		color: 'white',
-		background: '#7a43f5',
+		background: SEC_BG,
 		cursor: 'pointer',
-		borderRadius: '50%'
+		borderRadius: BORDER_RADIUS
 	},
 	overlap: {
 		whiteSpace: 'nowrap',
@@ -39,21 +40,21 @@ const styles = {
 	},
 	newVal: {
 		padding: '0.8em',
-		border: '1px solid #7a43f5',
-		margin: '0 0.5em',
 		display: 'flex'
 	},
 	addNewTextBox: {
-		padding: '0.8em',
-		border: '1px solid #7a43f5',
+		padding: '0.5em',
 		margin: '0px 0.5em 0 0',
-		width: '-webkit-fill-available'
+		width: '-webkit-fill-available',
+		border: `1px solid ${BG}`
 	},
 	addNewBtn: {
 		border: 'none',
 		color: 'white',
 		cursor: 'pointer',
-		background: '#7a43f5'
+		background: BG,
+		borderRadius: BORDER_RADIUS,
+		minWidth: 40
 	}
 };
 
@@ -93,182 +94,181 @@ const FormDetails: React.FC<FormDetailsProps> = ({
 		<div
 			style={{
 				margin: '0.5em',
-				display: 'flex'
+				display: 'flex',
+				overflow: 'scroll'
 			}}
 		>
 			{details?.length ? (
-				<div style={{ ...styles.borders, borderBottom: 'none', flex: 1 }}>
-					<div
-						style={{
-							...styles.flex,
-							...styles.padding,
-							flexDirection: 'row',
-							borderBottom: '1px solid #7a43f5',
-							alignItems: 'center'
-						}}
-					>
-						<div style={{ fontWeight: 800, width: 100, padding: '0.4em' }}>
-							Keys
-						</div>{' '}
-						&#x2194;
-						<div style={{ ...styles.fullWidth, fontWeight: 800, flex: 1 }}>
-							Values
-						</div>
-					</div>
+				<div style={{ flex: 1 }}>
 					<div
 						style={{
 							overflowY: 'scroll',
 							flex: 1
 						}}
 					>
-						{details?.map((eachKey: any, index) => (
-							<div
-								key={index}
-								style={{
-									...styles.flex,
-									...styles.fullWidth,
-									...styles.padding,
-									flex: 1,
-									flexDirection: 'column',
-									borderBottom: '1px solid #7a43f5'
-								}}
-							>
+						{details
+							?.sort((a: any, b: any) => (b.date > a.date ? 1 : -1))
+							?.map((eachKey: any, index) => (
 								<div
+									key={index}
 									style={{
 										...styles.flex,
 										...styles.fullWidth,
-										...styles.padding,
-										flex: 1,
-										flexDirection: 'row',
-										alignItems: 'center'
+										flexDirection: 'column',
+										margin: '0.4em',
+										boxShadow: 'rgba(17, 17, 26, 0.1) 0px 0px 16px',
+										background: 'white',
+										borderRadius: BORDER_RADIUS
 									}}
 								>
 									<div
 										style={{
-											...styles.overlap,
-											fontFamily: 'monospace',
-											width: 100,
-											fontSize: '20px'
-										}}
-									>
-										{eachKey.key}
-									</div>
-									&#x2192;
-									<div
-										style={{
+											...styles.flex,
 											...styles.fullWidth,
-											fontFamily: 'monospace',
-											display: 'flex',
-											alignItems: 'center',
-											flexWrap: 'wrap'
+											flex: 1,
+											flexDirection: 'column'
 										}}
 									>
-										{eachKey.value.map((eachValue: any, ind: number) => (
+										<div
+											style={{
+												...styles.flex,
+												...styles.overlap,
+												fontSize: '14px',
+												alignItems: 'flex-end',
+												justifyContent: 'space-between'
+											}}
+										>
 											<div
 												style={{
-													border: '1px solid #7a43f5',
-													margin: '0.2em 0.2em',
-													cursor: 'pointer',
-													borderRadius: '5px',
-													fontSize: '20px',
-													display: 'flex'
+													color: 'rgb(39 29 26)',
+													fontWeight: 700,
+													textTransform: 'capitalize',
+													paddingLeft: '0.5em'
 												}}
-												key={ind}
 											>
-												<div
-													style={{
-														padding: '0.3em'
-													}}
+												{eachKey.key}
+											</div>
+											<div>
+												<button
+													style={styles.button}
 													onClick={() => {
-														navigator.clipboard.writeText(eachValue);
-														setIsCoped({
-															type: 'Text content copied now click CTRL+P to paste',
-															copied: true
-														});
+														setSelectedId(index);
+														setAddNew(!addNew);
+														setNewValue('');
 													}}
 												>
-													{eachValue}
-												</div>
-												{eachKey.value.length > 1 && (
+													{selectedId === index && addNew ? (
+														<span>&#10006;</span>
+													) : (
+														<span>&#x271A;</span>
+													)}
+												</button>
+												<button
+													style={styles.button}
+													onClick={() => {
+														deleteExixtingKeyValuePair(index);
+													}}
+												>
+													&#x2716;
+												</button>
+											</div>
+										</div>
+										{selectedId === index && addNew && (
+											<div style={styles.newVal}>
+												<input
+													placeholder='Add new value'
+													style={styles.addNewTextBox}
+													value={newValue}
+													onChange={(e) => {
+														setNewValue(e.target.value);
+													}}
+												/>
+												<button
+													style={{
+														...styles.addNewBtn,
+														textTransform: 'capitalize',
+														fontWeight: 600
+													}}
+													onClick={() => {
+														updateExixtingStructure(index, newValue);
+														setAddNew(false);
+													}}
+												>
+													&#x271A;
+												</button>
+											</div>
+										)}
+										<div
+											style={{
+												...styles.fullWidth,
+												display: 'flex',
+												alignItems: 'center',
+												flexWrap: 'wrap',
+												background: '#eef2f5',
+												margin: '0.8em',
+												padding: '0.8em',
+												borderRadius: '10px'
+											}}
+										>
+											{eachKey.value.map((eachValue: any, ind: number) => (
+												<div
+													style={{
+														border: `1px solid ${BG}`,
+														margin: '0.3em',
+														cursor: 'pointer',
+														borderRadius: BORDER_RADIUS,
+														fontSize: '14px',
+														display: 'flex',
+														background: 'white'
+													}}
+													key={ind}
+												>
 													<div
 														style={{
-															background: '#7a43f5',
-															padding: '0.2em',
-															color: 'white',
-															display: 'flex',
-															alignItems: 'center',
-															justifyContent: 'center'
+															padding: '0.3em 0.6em'
+														}}
+														onClick={() => {
+															navigator.clipboard.writeText(eachValue);
+															setIsCoped({
+																type: 'Text content copied now click CTRL+P to paste',
+																copied: true
+															});
 														}}
 													>
-														<span
+														{eachValue}
+													</div>
+													{eachKey.value.length > 1 && (
+														<div
 															style={{
+																background: BG,
+																padding: '0.2em',
+																color: 'white',
 																display: 'flex',
-																justifyContent: 'center',
 																alignItems: 'center',
-																marginLeft: '0.2em'
-															}}
-															onClick={() => {
-																removeSpecficValFromKey(index, ind);
+																justifyContent: 'center'
 															}}
 														>
-															&#x2716;
-														</span>
-													</div>
-												)}
-											</div>
-										))}
-										<button
-											style={styles.button}
-											onClick={() => {
-												setSelectedId(index);
-												setAddNew(!addNew);
-												setNewValue('');
-											}}
-										>
-											{selectedId === index && addNew ? (
-												<span>&#10006;</span>
-											) : (
-												<span>&#x271A;</span>
-											)}
-										</button>
-
-										<button
-											style={styles.button}
-											onClick={() => {
-												deleteExixtingKeyValuePair(index);
-											}}
-										>
-											&#x2716;
-										</button>
+															<span
+																style={{
+																	display: 'flex',
+																	justifyContent: 'center',
+																	alignItems: 'center',
+																	marginLeft: '0.2em'
+																}}
+																onClick={() => {
+																	removeSpecficValFromKey(index, ind);
+																}}
+															>
+																&#x2716;
+															</span>
+														</div>
+													)}
+												</div>
+											))}
+										</div>
 									</div>
 								</div>
-								{selectedId === index && addNew && (
-									<div style={styles.newVal}>
-										<input
-											placeholder='Add new values'
-											style={styles.addNewTextBox}
-											value={newValue}
-											onChange={(e) => {
-												setNewValue(e.target.value);
-											}}
-										/>
-										<button
-											style={{
-												...styles.addNewBtn,
-												textTransform: 'uppercase',
-												fontWeight: 600
-											}}
-											onClick={() => {
-												updateExixtingStructure(index, newValue);
-												setAddNew(false);
-											}}
-										>
-											Add
-										</button>
-									</div>
-								)}
-							</div>
-						))}
+							))}
 					</div>
 				</div>
 			) : (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { BG, BORDER_RADIUS } from '../utils';
 
 interface FormsProps {
 	addNewKeyVal: any;
@@ -19,8 +20,10 @@ const styles = {
 		flex: 1,
 		padding: '0.5em',
 		margin: '0.5em',
-		border: '1px solid #7a43f5',
-		outline: 'none'
+		border: `1px solid ${BG}`,
+		outline: 'none',
+		fontFamily: 'inherit',
+		borderRadius: BORDER_RADIUS
 	},
 	button: {
 		flex: 1,
@@ -28,7 +31,9 @@ const styles = {
 		margin: '0.5em',
 		width: '100%',
 		border: 'none',
-		color: 'white'
+		color: 'white',
+		fontFamily: 'inherit',
+		borderRadius: BORDER_RADIUS
 	}
 };
 
@@ -49,7 +54,13 @@ const Forms: React.FC<FormsProps> = ({
 		<div
 			style={{
 				display: 'flex',
-				flexDirection: 'column'
+				flexDirection: 'column',
+				padding: '0.4em',
+				margin: '0.8em',
+				boxShadow: 'rgba(17, 17, 26, 0.1) 0px 0px 16px',
+				marginBottom: '0',
+				borderRadius: BORDER_RADIUS,
+				background: 'white'
 			}}
 		>
 			<div style={styles.flex}>
@@ -75,11 +86,11 @@ const Forms: React.FC<FormsProps> = ({
 					disabled={!formKey.length || !formValue.length}
 					style={{
 						...styles.button,
-						textTransform: 'uppercase',
+						textTransform: 'capitalize',
 						fontWeight: 600,
 						cursor:
 							formKey.length && formValue.length ? 'pointer' : 'not-allowed',
-						background: '#7a43f5'
+						background: BG
 					}}
 					onClick={() => addNewKeyVal()}
 				>
@@ -90,10 +101,10 @@ const Forms: React.FC<FormsProps> = ({
 				<button
 					style={{
 						...styles.button,
-						textTransform: 'uppercase',
+						textTransform: 'capitalize',
 						fontWeight: 600,
 						cursor: 'pointer',
-						background: '#7a43f5'
+						background: BG
 					}}
 					onClick={() => {
 						setIsImporting(true);
@@ -104,10 +115,10 @@ const Forms: React.FC<FormsProps> = ({
 				<button
 					style={{
 						...styles.button,
-						textTransform: 'uppercase',
+						textTransform: 'capitalize',
 						fontWeight: 600,
 						cursor: 'pointer',
-						background: '#7a43f5'
+						background: BG
 					}}
 					onClick={() => {
 						let exportedData: any = localStorage.getItem('savedKeys');
@@ -123,10 +134,10 @@ const Forms: React.FC<FormsProps> = ({
 				<button
 					style={{
 						...styles.button,
-						textTransform: 'uppercase',
+						textTransform: 'capitalize',
 						fontWeight: 600,
 						cursor: 'pointer',
-						background: '#7a43f5'
+						background: BG
 					}}
 					onClick={() => {
 						localStorage.removeItem('savedKeys');
@@ -144,7 +155,9 @@ const Forms: React.FC<FormsProps> = ({
 								...styles.flex,
 								margin: '0.5em',
 								width: '-webkit-fill-available',
-								color: 'black'
+								color: 'black',
+								border: `1px solid ${BG}`,
+								fontFamily: 'inherit'
 							}}
 							value={importData}
 							onChange={(e) => setImportData(e.target.value)}
@@ -155,10 +168,10 @@ const Forms: React.FC<FormsProps> = ({
 						<button
 							style={{
 								...styles.button,
-								textTransform: 'uppercase',
+								textTransform: 'capitalize',
 								fontWeight: 600,
 								cursor: 'pointer',
-								background: '#7a43f5'
+								background: BG
 							}}
 							onClick={() => {
 								localStorage.setItem('savedKeys', importData);

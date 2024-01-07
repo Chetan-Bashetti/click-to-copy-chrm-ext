@@ -26,7 +26,8 @@ function App() {
 	const addNewKeyVal = () => {
 		let newObj = {
 			value: [formValue],
-			key: formKey
+			key: formKey,
+			date: Date.now()
 		};
 		let detData: any = localStorage.getItem('savedKeys');
 		let existingData = detData?.length ? JSON.parse(detData) : [];

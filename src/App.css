@@ -5,6 +5,9 @@
 	width: 400px;
 	display: flex;
 	flex-direction: column;
-	overflow: scroll;
-	font-family: monospace;
+	overflow: hidden;
+	background: #f1f5f8;
+	box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+		rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+	font-family: 'Lato', sans-serif;
 }
